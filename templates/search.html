@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+
+  <h4 class="text-dark" style="letter-spacing: 2px;">Showing Results for: </h4>
+  <h3 class="text-primary" style="letter-spacing: 2px;">{{ keyword }}</h3>
+  <hr class="bg-danger border-3 border-bottom border-top border-danger" />
+  <div class="row mb-2">
+    {% if blogs %}
+    {% for i in blogs %}       
+      <div class="col-md-6">
+        <div class="card border-0">
+          <div class="card-body">
+            <a href="{% url 'blogs' i.slug %}" class='text-dark'><h3>{{i.title}}</h3></a>
+            <small class="mb-1 text-muted">{{i.created_at | timesince }} ago | {{ i.author}}</small>
+            <p class="card-text">
+              {{ i.short_description | truncatewords:25}}
+            </p>
+          </div>
+        </div>
+      </div>          
+    {% endfor %}
+    {% else %}
+    <p>No blogs found to show.</p>
+    {% endif %}
+
+  </div>
+
+  {% endblock %}

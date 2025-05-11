@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+
+    <div class="row">
+        <!-- Load Sidebar -->
+        {% include 'dashboard/sidebar.html' %}
+
+
+        <!-- Right Side Content -->
+         <div class="col-md-9">
+          {% if perms.auth.view_user %}
+            <h2 class="text-center">All Users</h2>
+            <a href="{% url 'add_user' %}" class="btn btn-dark text-light float-end mb-2">Add New User</a>
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Active</th>
+                    <th scope="col">Staff</th>
+                    <th scope="col">SuperUser</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for i in users %}
+                  <tr>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.first_name }} {{ i.last_name }}</td>
+                    <td>{{ i.username }}</td>
+                    <td>{{ i.email }}</td>
+                    <td>{% if i.is_active == True %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-xmark text-danger"></i>{% endif %}</td>
+                    <td>{% if i.is_staff == True %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-xmark text-danger"></i>{% endif %}</td>
+                    <td>{% if i.is_superuser == True %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-xmark text-danger"></i>{% endif %}</td>
+                    <td>
+                      <a href="{% url 'edit_user' i.id %}"><i class="fa fa-pencil text-success"></i></a>
+                      &nbsp;
+                      <a href="{% url 'delete_user' i.id %}"><i class="fa fa-trash-can text-danger"></i></a>
+                  </td>
+
+                  </tr>
+                {% endfor %}
+                  
+                </tbody>
+              </table>
+              {% else %}
+              <h5 class="text-warning">You are not authorized to open this page.</h5>
+              {% endif %}
+         </div>
+    </div>
+
+
+    {% endblock %}
